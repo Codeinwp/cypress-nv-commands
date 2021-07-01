@@ -1,0 +1,18 @@
+{
+  "name": "cypress-nv-commands",
+  "version": "1.0.0",
+  "description": "Neve Theme Cypress Commands",
+  "main": "index.ts",
+  "repository": "git@github.com:Codeinwp/cypress-nv-commands.git",
+  "author": "Augusto Silva <augusto@themeisle.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "cypress": "^7.6.0",
+    "eslint": "^7.29.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-chai-friendly": "^0.7.1",
+    "eslint-plugin-cypress": "^2.11.3",
+    "prettier": "^2.3.2",
+    "typescript": "^4.3.5"
+  }
+}
