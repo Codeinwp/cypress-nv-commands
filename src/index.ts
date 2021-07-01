@@ -1,4 +1,4 @@
-import 'cypress'
+/// <reference types="cypress" />
 
 Cypress.Commands.add('login', (nextRoute: string = null) => {
 	cy.getCookies({
