@@ -188,7 +188,7 @@ Cypress.Commands.add('toggleElements', (show) => {
 	});
 });
 
-Cypress.Commands.add('getControl', (control: string) => {
+Cypress.Commands.add('getControl', (control) => {
 	return cy.get(`label[for=${control}]`).parent();
 });
 
