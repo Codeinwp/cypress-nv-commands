@@ -229,7 +229,7 @@ Cypress.Commands.add('getJWT', () => {
 	});
 });
 
-Cypress.Commands.add('updatePageOrPostByRequest', (postId: string, type: string, body) => {
+Cypress.Commands.add('updatePageOrPostByRequest', (postId, type, body) => {
 	cy.getJWT().then(() => {
 		cy.request({
 			method: 'POST',
