@@ -192,7 +192,7 @@ Cypress.Commands.add('getControl', (control) => {
 	return cy.get(`label[for=${control}]`).parent();
 });
 
-Cypress.Commands.add('activateCheckbox', (checkboxSelector: string, checkboxText: string) => {
+Cypress.Commands.add('activateCheckbox', (checkboxSelector, checkboxText) => {
 	cy.get(checkboxSelector)
 		.contains(checkboxText)
 		.prev()
