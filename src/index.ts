@@ -175,7 +175,7 @@ Cypress.Commands.add('aliasRestRoutes', () => {
 	cy.intercept('POST', '/wp-admin/admin-ajax.php').as('customizerSave');
 });
 
-Cypress.Commands.add('toggleElements', (show: boolean) => {
+Cypress.Commands.add('toggleElements', (show) => {
 	const icon = show ? 'dashicons-hidden' : 'dashicons-visibility';
 	cy.get('.ti-sortable-item-area .ti-sortable-item-toggle').each(function (el) {
 		cy.get(el)
