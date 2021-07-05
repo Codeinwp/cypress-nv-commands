@@ -16,8 +16,7 @@ Cypress.Commands.add('loginWithRequest', (nextRoute = '/wp-admin') => {
         body: {
           log: Cypress.env('user'),
           pwd: Cypress.env('password'),
-          'wp-submit': 'Log In',
-          redirect_to: 'http://localhost:8081/wp-admin',
+          'wp-submit': 'Log In'
         },
       });
     }
