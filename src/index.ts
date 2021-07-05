@@ -135,7 +135,7 @@ Cypress.Commands.add('updatePost', () => {
 	cy.wait(500);
 });
 
-Cypress.Commands.add('getCustomizerControl', (slug: string) => {
+Cypress.Commands.add('getCustomizerControl', (slug) => {
 	cy.window().then((win) => {
 		win.wp.customize.control(slug).focus();
 	});
