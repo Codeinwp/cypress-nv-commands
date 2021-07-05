@@ -1,6 +1,31 @@
 /// <reference types="cypress" />
 
-Cypress.Commands.add('login', (nextRoute: string = null) => {
+Cypress.Commands.add('loginWithRequest', (nextRoute = '/wp-admin') => {
+  let isLoggedIn = false;
+  cy.getCookies({ log: true }).then((cookies) => {
+    cookies.forEach((value) => {
+      if (value.name.includes('wordpress_logged_in_')) {
+        isLoggedIn = true;
+      }
+    });
+    if (!isLoggedIn) {
+      cy.request({
+        method: 'POST',
+        url: '/wp-login.php',
+        form: true,
+        body: {
+          log: Cypress.env('user'),
+          pwd: Cypress.env('password'),
+          'wp-submit': 'Log In',
+          redirect_to: 'http://localhost:8081/wp-admin',
+        },
+      });
+    }
+    cy.visit(nextRoute);
+  });
+});
+
+Cypress.Commands.add('login', (nextRoute = '/wp-admin') => {
 	cy.getCookies({
 		log: true,
 	}).then((cookies) => {
@@ -12,9 +37,7 @@ Cypress.Commands.add('login', (nextRoute: string = null) => {
 		});
 
 		if (isLoggedIn) {
-			if (nextRoute !== null) {
 				cy.visit(nextRoute);
-			}
 			return;
 		}
 		cy.visit('/wp-admin');
@@ -22,9 +45,6 @@ Cypress.Commands.add('login', (nextRoute: string = null) => {
 		cy.get('#user_login').type(Cypress.env('user'));
 		cy.get('#user_pass').type(Cypress.env('password'));
 		cy.get('#wp-submit').click();
-		if (nextRoute === null) {
-			return;
-		}
 		cy.visit(nextRoute);
 	});
 });
