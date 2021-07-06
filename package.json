@@ -1,6 +1,6 @@
 {
   "name": "cypress-nv-commands",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "Neve Theme Cypress Commands",
   "main": "index.ts",
   "repository": "git@github.com:Codeinwp/cypress-nv-commands.git",

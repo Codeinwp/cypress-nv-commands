@@ -101,7 +101,7 @@ Cypress.Commands.add(
 
 Cypress.Commands.add(
 	'insertPostWithRequest',
-	(title = 'Test Title', content = 'Test content', type = 'posts', featured?, tags?) => {
+	(title = 'Test Title', content = 'Test content', type = 'posts', featured=0, tags=[]) => {
 		cy.loginWithRequest();
 		cy.getJWT().then(() => {
 			cy.request({
