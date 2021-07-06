@@ -240,3 +240,19 @@ Cypress.Commands.add('updatePageOrPostByRequest', (postId, type, body) => {
 		});
 	});
 });
+
+Cypress.Commands.add('createTagWithRequest', (tagName) => {
+  cy.getJWT().then(() =>{
+    cy.request({
+      method: 'POST',
+      url: '/wp-json/wp/v2/tags',
+      auth: {
+        bearer: window.localStorage.getItem('jwt')
+      },
+      body: {name: tagName}
+    }).then((resp) => {
+      expect(resp.status).to.eq(201);
+      window.localStorage.setItem('tagId', resp.body.id);
+    })
+  })
+})

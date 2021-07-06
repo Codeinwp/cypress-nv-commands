@@ -185,5 +185,13 @@ declare namespace Cypress {
 		 * @example cy.updatePageOrPostByRequest('12', { size: '20px' })
 		 */
 		updatePageOrPostByRequest(postId: string, type: string, body): Chainable;
+
+    /**
+     * Creates a new tag with the desired name, and set the ID on local storage.
+     * 
+     * @param tagName 
+     * @example cy.createTagWithRequest('test-tag')
+     */
+    createTagWithRequest(tagName: string): Chainable;
 	}
 }
