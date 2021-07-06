@@ -72,7 +72,7 @@ declare namespace Cypress {
 		 * @param type
 		 * @param featured the id of the image you want to feature
 		 */
-		insertPostWithRequest(title: string, content: string, type: string, featured?: number, tags?: number);
+		insertPostWithRequest(title: string, content: string, type: string, featured?: number, tags?: number[]);
 
 		/**
 		 * Click on update button on a published post
@@ -89,7 +89,7 @@ declare namespace Cypress {
 		 * @example
 		 *  cy.getCustomizerControl('neve_global')
 		 */
-		getCustomizerControl(slug: string): Chainable<unknown>;
+		getCustomizerControl(slug: string): Chainable;
 
 		/**
 		 * Sets Customizer Settings using UI
@@ -132,7 +132,7 @@ declare namespace Cypress {
 		 * @example
 		 *  cy.getControl('neve_sidebar')
 		 */
-		getControl(control: string): Chainable<unknown>;
+		getControl(control: string): Chainable;
 
 		/**
 		 * Activates a checkbox
@@ -150,7 +150,7 @@ declare namespace Cypress {
 		 * @example
 		 *  cy.openNeveSidebar()
 		 */
-		openNeveSidebar(): Chainable<unknown>;
+		openNeveSidebar(): Chainable;
 
 		/**
 		 * Activates Classic editor plugin

@@ -101,7 +101,7 @@ Cypress.Commands.add(
 
 Cypress.Commands.add(
 	'insertPostWithRequest',
-	(title = 'Test Title', content = 'Test content', type = 'posts', featured = 0) => {
+	(title = 'Test Title', content = 'Test content', type = 'posts', featured?, tags?) => {
 		cy.loginWithRequest();
 		cy.getJWT().then(() => {
 			cy.request({
@@ -119,6 +119,7 @@ Cypress.Commands.add(
 						protected: false,
 					},
 					featured_media: featured,
+          tags: tags
 				},
 			}).then((resp) => {
 				expect(resp.status).to.eq(201);
