@@ -72,7 +72,7 @@ declare namespace Cypress {
 		 * @param type
 		 * @param featured the id of the image you want to feature
 		 */
-		insertPostWithRequest(title: string, content: string, type: string, featured?: number, tags?: number);
+		insertPostWithRequest(title: string, content: string, type: string, featured?: number);
 
 		/**
 		 * Click on update button on a published post
