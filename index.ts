@@ -207,11 +207,11 @@ Cypress.Commands.add('openNeveSidebar', () => {
 });
 
 Cypress.Commands.add('activateClassicEditorPlugin', () => {
-	cy.task('docker-compose -f ../docker-compose.ci.yml run --rm -u root cli wp --allow-root plugin activate classic-editor')
+	cy.exec('docker-compose -f ../docker-compose.ci.yml run --rm -u root cli wp --allow-root plugin activate classic-editor')
 });
 
 Cypress.Commands.add('deactivateClassicEditorPlugin', () => {
-	cy.task('docker-compose -f ../docker-compose.ci.yml run --rm -u root cli wp --allow-root plugin deactivate classic-editor')
+	cy.exec('docker-compose -f ../docker-compose.ci.yml run --rm -u root cli wp --allow-root plugin deactivate classic-editor')
 });
 
 Cypress.Commands.add('getJWT', () => {
