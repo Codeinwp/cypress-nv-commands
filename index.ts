@@ -207,15 +207,11 @@ Cypress.Commands.add('openNeveSidebar', () => {
 });
 
 Cypress.Commands.add('activateClassicEditorPlugin', () => {
-	cy.loginWithRequest('/wp-admin/plugins.php');
-	cy.get('#activate-classic-editor').contains('Activate').click();
-	cy.get('#deactivate-classic-editor').should('exist');
+	cy.task('docker-compose -f ../docker-compose.ci.yml run --rm -u root cli wp --allow-root plugin activate classic-editor')
 });
 
 Cypress.Commands.add('deactivateClassicEditorPlugin', () => {
-	cy.loginWithRequest('/wp-admin/plugins.php');
-	cy.get('#deactivate-classic-editor').contains('Deactivate').click();
-	cy.get('#activate-classic-editor').should('exist');
+	cy.task('docker-compose -f ../docker-compose.ci.yml run --rm -u root cli wp --allow-root plugin deactivate classic-editor')
 });
 
 Cypress.Commands.add('getJWT', () => {
