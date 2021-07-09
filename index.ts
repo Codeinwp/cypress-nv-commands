@@ -220,13 +220,17 @@ Cypress.Commands.add('deactivateClassicEditorPlugin', () => {
 });
 
 Cypress.Commands.add('getJWT', () => {
-  cy.request('POST', '/wp-json/api-bearer-auth/v1/login', {
-    username: 'admin',
-    password: 'admin',
-  }).then((response) => {
-    expect(response.body.access_token).to.exist;
-    window.localStorage.setItem('jwt', response.body.access_token);
-  });
+  if (!window.localStorage.getItem('jwt')) {
+    cy.request('POST', '/wp-json/api-bearer-auth/v1/login', {
+      username: 'admin',
+      password: 'admin',
+    }).then((response) => {
+      expect(response.body.access_token).to.exist;
+      window.localStorage.setItem('jwt', response.body.access_token);
+    });
+  } else {
+    expect(window.localStorage.getItem('jwt')).to.exist;
+  }
 });
 
 Cypress.Commands.add('updatePageOrPostByRequest', (postId, type, body) => {
