@@ -27,7 +27,7 @@ declare namespace Cypress {
      * @example
      *   cy.loginWithRequest('/shop')
      */
-    loginWithRequest(nextRoute?: string): void;
+    loginWithRequest(nextRoute?: string): Chainable;
 
     /**
      * Login through UI once and verify if the user is already logged in
