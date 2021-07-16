@@ -263,3 +263,16 @@ Cypress.Commands.add('createTagWithRequest', (tagName) => {
     });
   });
 });
+
+Cypress.Commands.add('updateSettingWithRequest', (body) => {
+  cy.getJWT().then(() => {
+    cy.request({
+      method: 'POST',
+      url: '/wp-json/wp/v2/settings',
+      auth: {
+        bearer: window.localStorage.getItem('jwt'),
+      },
+      body,
+    });
+  });
+});

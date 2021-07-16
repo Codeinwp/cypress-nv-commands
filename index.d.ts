@@ -193,5 +193,14 @@ declare namespace Cypress {
      * @example cy.createTagWithRequest('test-tag')
      */
     createTagWithRequest(tagName: string): Chainable;
+
+    /**
+     * Updates settings through WP Rest API
+     *
+     * @param body
+     *
+     * @example cy.updateSettingWithRequest({"setting": "value"})
+     */
+    updateSettingWithRequest(body);
   }
 }
