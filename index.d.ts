@@ -202,5 +202,13 @@ declare namespace Cypress {
      * @example cy.updateSettingWithRequest({"setting": "value"})
      */
     updateSettingWithRequest(body);
+
+    /**
+     *
+     * @param pluginSlug
+     * @param status
+     * @example cy.changePluginStatus('classic-editor/classic-editor', 'active')
+     */
+    changePluginStatus(pluginSlug: string, status: string);
   }
 }
