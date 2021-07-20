@@ -169,13 +169,6 @@ declare namespace Cypress {
     deactivateClassicEditorPlugin(): void;
 
     /**
-     * Get a JWT token to send request to Wordpress REST API
-     *
-     * @example cy.getJWT()
-     */
-    getJWT();
-
-    /**
      * Updates a post or page by request to WP Rest API.
      * Needs a valid JWT set on local storage.
      *
