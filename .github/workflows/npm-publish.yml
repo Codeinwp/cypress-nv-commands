@@ -18,7 +18,12 @@ jobs:
           node-version: 14
           registry-url: https://registry.npmjs.org/
       - run: yarn install --frozen-lockfile
+      - name: Setup git
+        env:
+          GITHUB_EMAIL: ${{secrets.PIRATE_BOT_EMAIL}}
+        run: |
+          git config --local user.email "$GITHUB_EMAIL"
+          git config --local user.name "pirate-bot"
       - run: yarn version --patch
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-          GITHUB_TOKEN: ${{secrets.BOT_TOKEN}}
