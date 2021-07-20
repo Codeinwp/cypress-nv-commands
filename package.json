@@ -6,6 +6,9 @@
   "repository": "git@github.com:Codeinwp/cypress-nv-commands.git",
   "author": "Augusto Silva <augusto@themeisle.com>",
   "license": "MIT",
+  "scripts": {
+    "postversion": "git push && git push --tags && npm publish"
+  },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.19.0",
     "@typescript-eslint/parser": "^4.19.0",
