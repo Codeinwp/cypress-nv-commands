@@ -85,7 +85,7 @@ Cypress.Commands.add(
     },
 );
 
-Cypress.Commands.add('getRandomAttachament', () => {
+Cypress.Commands.add('getRandomAttachment', () => {
   cy.loginWithRequest();
   cy.request({
     method: 'GET',
