@@ -1,51 +1,11 @@
 /// <reference types="cypress" />
 
 Cypress.Commands.add('loginWithRequest', (nextRoute = '/wp-admin') => {
-  let isLoggedIn = false;
-  cy.getCookies({ log: true }).then((cookies) => {
-    cookies.forEach((value) => {
-      if (value.name.includes('wordpress_logged_in_')) {
-        isLoggedIn = true;
-      }
-    });
-    if (!isLoggedIn) {
-      cy.request({
-        method: 'POST',
-        url: '/wp-login.php',
-        form: true,
-        body: {
-          log: Cypress.env('user'),
-          pwd: Cypress.env('password'),
-          'wp-submit': 'Log In',
-        },
-      });
-    }
-    cy.visit(nextRoute);
-  });
+  cy.visit(nextRoute);
 });
 
 Cypress.Commands.add('login', (nextRoute = '/wp-admin') => {
-  cy.getCookies({
-    log: true,
-  }).then((cookies) => {
-    let isLoggedIn = false;
-    cookies.forEach((value) => {
-      if (value.name.includes('wordpress_')) {
-        isLoggedIn = true;
-      }
-    });
-
-    if (isLoggedIn) {
-      cy.visit(nextRoute);
-      return;
-    }
-    cy.visit('/wp-admin');
-    cy.wait(500);
-    cy.get('#user_login').type(Cypress.env('user'));
-    cy.get('#user_pass').type(Cypress.env('password'));
-    cy.get('#wp-submit').click();
-    cy.visit(nextRoute);
-  });
+  cy.visit(nextRoute);
 });
 
 Cypress.Commands.add('clearWelcome', () => {
@@ -104,32 +64,38 @@ Cypress.Commands.add(
   'insertPostWithRequest',
   (title = 'Test Title', content = 'Test content', type = 'posts', featured = 0) => {
     cy.loginWithRequest();
-    cy.getJWT().then(() => {
-      cy.request({
-        method: 'POST',
-        url: '/wp-json/wp/v2/' + type,
-        auth: {
-          bearer: window.localStorage.getItem('jwt'),
+    cy.request({
+      method: 'POST',
+      url: '/wp-json/wp/v2/' + type,
+      body: {
+        title,
+        status: 'publish',
+        content: {
+          raw: content,
+          rendered: 'The test content',
+          protected: false,
         },
-        body: {
-          title,
-          status: 'publish',
-          content: {
-            raw: content,
-            rendered: 'The test content',
-            protected: false,
-          },
-          featured_media: featured,
-        },
-      }).then((resp) => {
-        expect(resp.status).to.eq(201);
-        window.localStorage.setItem('postId', resp.body.id);
-        window.localStorage.setItem('postUrl', '/' + resp.body.slug);
-      });
+        featured_media: featured,
+      },
+    }).then((resp) => {
+      expect(resp.status).to.eq(201);
+      window.localStorage.setItem('postId', resp.body.id);
+      window.localStorage.setItem('postUrl', '/' + resp.body.slug);
     });
   },
 );
 
+Cypress.Commands.add('getRandomAttachment', () => {
+  cy.loginWithRequest();
+  cy.request({
+    method: 'GET',
+    url: '/wp-json/wp/v2/media',
+  }).then((resp) => {
+    expect(resp.status).to.eq(200);
+    window.localStorage.setItem('randomAttachmentId', resp.body[0].id);
+    window.localStorage.setItem('randomAttachmentUrl', resp.body[0].source_url);
+  });
+});
 Cypress.Commands.add('updatePost', () => {
   cy.get('.editor-post-publish-button').click();
   cy.wait(500);
@@ -208,71 +174,39 @@ Cypress.Commands.add('openNeveSidebar', () => {
 });
 
 Cypress.Commands.add('activateClassicEditorPlugin', () => {
-  cy.exec(
-    'docker-compose -f ../docker-compose.ci.yml run --rm -u root cli wp --allow-root plugin activate classic-editor',
-  );
+  cy.changePluginStatus('classic-editor/classic-editor', 'active');
 });
 
 Cypress.Commands.add('deactivateClassicEditorPlugin', () => {
-  cy.exec(
-    'docker-compose -f ../docker-compose.ci.yml run --rm -u root cli wp --allow-root plugin deactivate classic-editor',
-  );
-});
-
-Cypress.Commands.add('getJWT', () => {
-  if (!window.localStorage.getItem('jwt')) {
-    cy.loginWithRequest().then(() => {
-      cy.request('POST', '/wp-json/api-bearer-auth/v1/login', {
-        username: 'admin',
-        password: 'admin',
-      }).then((response) => {
-        expect(response.body.access_token).to.exist;
-        window.localStorage.setItem('jwt', response.body.access_token);
-      });
-    });
-  } else {
-    expect(window.localStorage.getItem('jwt')).to.exist;
-  }
+  cy.changePluginStatus('classic-editor/classic-editor', 'inactive');
 });
 
 Cypress.Commands.add('updatePageOrPostByRequest', (postId, type, body) => {
-  cy.getJWT().then(() => {
-    cy.request({
-      method: 'POST',
-      url: '/wp-json/wp/v2/' + type + '/' + postId,
-      auth: {
-        bearer: window.localStorage.getItem('jwt'),
-      },
-      body,
-    });
+  cy.request({
+    method: 'POST',
+    url: '/wp-json/wp/v2/' + type + '/' + postId,
+    body,
   });
 });
 
 Cypress.Commands.add('createTagWithRequest', (tagName) => {
-  cy.getJWT().then(() => {
-    cy.request({
-      method: 'POST',
-      url: '/wp-json/wp/v2/tags',
-      auth: {
-        bearer: window.localStorage.getItem('jwt'),
-      },
-      body: { name: tagName },
-    }).then((resp) => {
-      expect(resp.status).to.eq(201);
-      window.localStorage.setItem('tagId', resp.body.id);
-    });
+  cy.request({
+    method: 'POST',
+    url: '/wp-json/wp/v2/tags',
+
+    body: { name: tagName },
+  }).then((resp) => {
+    expect(resp.status).to.eq(201);
+    window.localStorage.setItem('tagId', resp.body.id);
   });
 });
+Cypress.Commands.add('changePluginStatus', (pluginSlug, status) => {
+  cy.loginWithRequest();
 
-Cypress.Commands.add('updateSettingWithRequest', (body) => {
-  cy.getJWT().then(() => {
-    cy.request({
-      method: 'POST',
-      url: '/wp-json/wp/v2/settings',
-      auth: {
-        bearer: window.localStorage.getItem('jwt'),
-      },
-      body,
-    });
+  cy.request({
+    method: 'POST',
+    url: '/wp-json/wp/v2/plugins/' + pluginSlug + '?status=' + status,
+  }).then((resp) => {
+    expect(resp.status).to.eq(200);
   });
 });
