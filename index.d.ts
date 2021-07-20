@@ -197,6 +197,13 @@ declare namespace Cypress {
     updateSettingWithRequest(body);
 
     /**
+     * Get a random attachment from media
+     */
+
+    getRandomAttachment();
+
+    /**
+     * Changes a plugin status through WP Rest API
      *
      * @param pluginSlug
      * @param status
