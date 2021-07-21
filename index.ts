@@ -62,7 +62,7 @@ Cypress.Commands.add(
             .type('test-tag,', { force: true });
       }
       cy.get('.editor-post-title__input').type(title);
-      cy.get(' textarea.block-editor-default-block-appender__content').click({
+      cy.get('.block-editor-default-block-appender__content').click({
         force: true,
       });
       cy.get('.block-editor-rich-text__editable').type(content);
