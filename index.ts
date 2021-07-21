@@ -170,14 +170,15 @@ Cypress.Commands.add('getControl', (control) => {
 });
 
 Cypress.Commands.add('activateCheckbox', (checkboxSelector, checkboxText) => {
-  cy.get(checkboxSelector)
-      .contains(checkboxText)
-      .prev()
-      .then((checkbox) => {
-        if (!checkbox.hasClass('is-checked')) {
-          cy.get(checkbox).click();
-        }
-      });
+    cy.get(checkboxSelector)
+        .contains(checkboxText)
+        .parent()
+        .find('.components-form-toggle__input')
+        .then((checkbox) => {
+            if (!checkbox.hasClass('is-checked')) {
+                cy.get(checkbox).click({force:true});
+            }
+        });
 });
 
 Cypress.Commands.add('openNeveSidebar', () => {
