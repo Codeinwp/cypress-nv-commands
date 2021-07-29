@@ -23,77 +23,77 @@ Cypress.Commands.add('clearWelcome', () => {
   cy.window().then((win) => {
     // eslint-disable-next-line chai-friendly/no-unused-expressions
     win.wp &&
-    win.wp.data &&
-    win.wp.data.select('core/edit-post').isFeatureActive('welcomeGuide') &&
-    win.wp.data.dispatch('core/edit-post').toggleFeature('welcomeGuide');
+      win.wp.data &&
+      win.wp.data.select('core/edit-post').isFeatureActive('welcomeGuide') &&
+      win.wp.data.dispatch('core/edit-post').toggleFeature('welcomeGuide');
   });
 });
 
 Cypress.Commands.add(
-    'insertPost',
-    (title = 'Test', content = 'Content', type = 'post', featured = false, tags = false) => {
-      let loginRoute = '/wp-admin/post-new.php';
-      if (type !== 'post') {
-        loginRoute += '?post_type=' + type;
-      }
+  'insertPost',
+  (title = 'Test', content = 'Content', type = 'post', featured = false, tags = false) => {
+    let loginRoute = '/wp-admin/post-new.php';
+    if (type !== 'post') {
+      loginRoute += '?post_type=' + type;
+    }
 
-      cy.loginWithRequest(loginRoute);
-      cy.clearWelcome();
-      if (featured) {
-        cy.wait(1000);
-        cy.get('button').contains('Featured image').click();
-        cy.get('.editor-post-featured-image__toggle').click();
-        cy.get('.media-frame').find('.media-menu-item').contains('Media Library').click({
-          force: true,
-        });
-
-        cy.get('.attachments-browser .attachments > li.attachment').first().click({
-          force: true,
-        });
-        cy.get('.media-button-select').click();
-      }
-
-      if (tags) {
-        cy.get('.components-panel__body-toggle').contains('Tags').click({ force: true });
-        cy.get('.components-form-token-field__label')
-            .contains('Add New Tag')
-            .parent()
-            .find('input')
-            .type('test-tag,', { force: true });
-      }
-      cy.get('.editor-post-title__input').type(title);
-      cy.get('.block-editor-default-block-appender__content').click({
+    cy.loginWithRequest(loginRoute);
+    cy.clearWelcome();
+    if (featured) {
+      cy.wait(1000);
+      cy.get('button').contains('Featured image').click();
+      cy.get('.editor-post-featured-image__toggle').click();
+      cy.get('.media-frame').find('.media-menu-item').contains('Media Library').click({
         force: true,
       });
-      cy.get('.block-editor-rich-text__editable').type(content);
-      cy.get('.editor-post-publish-panel__toggle').click();
-      cy.updatePost();
-    },
+
+      cy.get('.attachments-browser .attachments > li.attachment').first().click({
+        force: true,
+      });
+      cy.get('.media-button-select').click();
+    }
+
+    if (tags) {
+      cy.get('.components-panel__body-toggle').contains('Tags').click({ force: true });
+      cy.get('.components-form-token-field__label')
+        .contains('Add New Tag')
+        .parent()
+        .find('input')
+        .type('test-tag,', { force: true });
+    }
+    cy.get('.editor-post-title__input').type(title);
+    cy.get('.block-editor-default-block-appender__content').click({
+      force: true,
+    });
+    cy.get('.block-editor-rich-text__editable').type(content);
+    cy.get('.editor-post-publish-panel__toggle').click();
+    cy.updatePost();
+  },
 );
 
 Cypress.Commands.add(
-    'insertPostWithRequest',
-    (title = 'Test Title', content = 'Test content', type = 'posts', featured = 0) => {
-      cy.loginWithRequest();
-      cy.request({
-        method: 'POST',
-        url: '/wp-json/wp/v2/' + type,
-        body: {
-          title,
-          status: 'publish',
-          content: {
-            raw: content,
-            rendered: 'The test content',
-            protected: false,
-          },
-          featured_media: featured,
+  'insertPostWithRequest',
+  (title = 'Test Title', content = 'Test content', type = 'posts', featured = 0) => {
+    cy.loginWithRequest();
+    cy.request({
+      method: 'POST',
+      url: '/wp-json/wp/v2/' + type,
+      body: {
+        title,
+        status: 'publish',
+        content: {
+          raw: content,
+          rendered: 'The test content',
+          protected: false,
         },
-      }).then((resp) => {
-        expect(resp.status).to.eq(201);
-        window.localStorage.setItem('postId', resp.body.id);
-        window.localStorage.setItem('postUrl', '/' + resp.body.slug);
-      });
-    },
+        featured_media: featured,
+      },
+    }).then((resp) => {
+      expect(resp.status).to.eq(201);
+      window.localStorage.setItem('postId', resp.body.id);
+      window.localStorage.setItem('postUrl', '/' + resp.body.slug);
+    });
+  },
 );
 
 Cypress.Commands.add('getRandomAttachment', () => {
@@ -127,22 +127,22 @@ Cypress.Commands.add('goToCustomizer', () => {
   cy.loginWithRequest('/wp-admin/customize.php');
   cy.visit('/wp-admin/customize.php');
   cy.window()
-      .then((win) => {
-        //If the customizer is not ready, bind the flag to ready event.
-        win.wp.customize.bind('ready', () => {
-          win.appReady = true;
-        });
-      })
-      .then(() => {
-        // If we bind to the ready event too late, we can check the body class 'ready'.
-        cy.get('body').then(($body) => {
-          if ($body.hasClass('ready')) {
-            cy.window().then((win) => {
-              win.appReady = true;
-            });
-          }
-        });
+    .then((win) => {
+      //If the customizer is not ready, bind the flag to ready event.
+      win.wp.customize.bind('ready', () => {
+        win.appReady = true;
       });
+    })
+    .then(() => {
+      // If we bind to the ready event too late, we can check the body class 'ready'.
+      cy.get('body').then(($body) => {
+        if ($body.hasClass('ready')) {
+          cy.window().then((win) => {
+            win.appReady = true;
+          });
+        }
+      });
+    });
   cy.window({
     timeout: 15000,
   }).should('have.property', 'appReady', true);
@@ -156,12 +156,12 @@ Cypress.Commands.add('toggleElements', (show) => {
   const icon = show ? 'dashicons-hidden' : 'dashicons-visibility';
   cy.get('.ti-sortable-item-area .ti-sortable-item-toggle').each(function (el) {
     cy.get(el)
-        .find('.dashicon')
-        .then(($icon) => {
-          if ($icon.hasClass(icon)) {
-            cy.get($icon).click();
-          }
-        });
+      .find('.dashicon')
+      .then(($icon) => {
+        if ($icon.hasClass(icon)) {
+          cy.get($icon).click();
+        }
+      });
   });
 });
 
@@ -170,15 +170,15 @@ Cypress.Commands.add('getControl', (control) => {
 });
 
 Cypress.Commands.add('activateCheckbox', (checkboxSelector, checkboxText) => {
-    cy.get(checkboxSelector)
-        .contains(checkboxText)
-        .parent()
-        .find('.components-form-toggle__input')
-        .then((checkbox) => {
-            if (!checkbox.hasClass('is-checked')) {
-                cy.get(checkbox).click({force:true});
-            }
-        });
+  cy.get(checkboxSelector)
+    .contains(checkboxText)
+    .parent()
+    .find('.components-form-toggle__input')
+    .then((checkbox) => {
+      if (!checkbox.hasClass('is-checked')) {
+        cy.get(checkbox).click({ force: true });
+      }
+    });
 });
 
 Cypress.Commands.add('openNeveSidebar', () => {
@@ -220,5 +220,13 @@ Cypress.Commands.add('changePluginStatus', (pluginSlug, status) => {
     url: '/wp-json/wp/v2/plugins/' + pluginSlug + '?status=' + status,
   }).then((resp) => {
     expect(resp.status).to.eq(200);
+  });
+});
+
+Cypress.Commands.add('updateSettingWithRequest', (body) => {
+  cy.request({
+    method: 'POST',
+    url: '/wp-json/wp/v2/settings',
+    body,
   });
 });
