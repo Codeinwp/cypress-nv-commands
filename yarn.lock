@@ -506,6 +506,11 @@ cross-spawn@^7.0.0, cross-spawn@^7.0.2:
     shebang-command "^2.0.0"
     which "^2.0.1"
 
+cypress-wait-for-stable-dom@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/cypress-wait-for-stable-dom/-/cypress-wait-for-stable-dom-0.0.1.tgz#e53d0e799064798a8b2034d6456772e65f6f17eb"
+  integrity sha512-wsV6s0gyqZ3g+aRhVKWeYjawbuy6ttnoyMP1Xa6F0vfkgqfy3s+goqU1ajzUU6Nq/vfK03XamGmbtWlOHUZ69Q==
+
 cypress@^7.6.0:
   version "7.6.0"
   resolved "https://registry.yarnpkg.com/cypress/-/cypress-7.6.0.tgz#80fe7496cd4165a0fa06e25fc11413dda4544463"
