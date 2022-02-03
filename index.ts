@@ -1,4 +1,6 @@
 /// <reference types="cypress" />
+import { registerCommand } from 'cypress-wait-for-stable-dom';
+registerCommand();
 
 Cypress.Commands.add('loginWithRequest', (nextRoute = '/wp-admin') => {
   let isLoggedIn = false;
@@ -40,7 +42,7 @@ Cypress.Commands.add(
     cy.loginWithRequest(loginRoute);
     cy.clearWelcome();
     if (featured) {
-      cy.wait(1000);
+      cy.waitForStableDOM({ pollInterval: 1000, timeout: 10000 })
       cy.get('button').contains('Featured image').click();
       cy.get('.editor-post-featured-image__toggle').click();
       cy.get('.media-frame').find('.media-menu-item').contains('Media Library').click({
