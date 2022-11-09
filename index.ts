@@ -44,7 +44,7 @@ Cypress.Commands.add(
     if (featured) {
       cy.waitForStableDOM({ pollInterval: 1000, timeout: 10000 })
       cy.get('button').contains('Featured image').click();
-      cy.get('.editor-post-featured-image__toggle').click();
+      //cy.get('.editor-post-featured-image__toggle').click();
       cy.get('.media-frame').find('.media-menu-item').contains('Media Library').click({
         force: true,
       });
